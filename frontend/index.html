@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TaskFlow</title>
+  <meta name="description" content="TaskFlow - simple task management dashboard" />
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <header class="app-header">
+    <div class="container header-inner">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true">✓</span>
+        <h1>TaskFlow</h1>
+      </div>
+      <span id="health" class="health" title="API status">Checking API…</span>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Summary -->
+    <section class="stats" aria-label="Task summary">
+      <div class="stat"><span class="stat-value" id="stat-total">0</span><span class="stat-label">Total</span></div>
+      <div class="stat stat-pending"><span class="stat-value" id="stat-pending">0</span><span class="stat-label">Pending</span></div>
+      <div class="stat stat-in-progress"><span class="stat-value" id="stat-in-progress">0</span><span class="stat-label">In Progress</span></div>
+      <div class="stat stat-completed"><span class="stat-value" id="stat-completed">0</span><span class="stat-label">Completed</span></div>
+    </section>
+
+    <!-- Global error banner -->
+    <div id="error-banner" class="banner banner-error" role="alert" hidden>
+      <span id="error-message"></span>
+      <button type="button" class="banner-close" id="error-close" aria-label="Dismiss error">×</button>
+    </div>
+
+    <div class="layout">
+      <!-- Create form -->
+      <section class="card form-card" aria-labelledby="create-heading">
+        <h2 id="create-heading">New task</h2>
+        <form id="create-form" novalidate>
+          <div class="field">
+            <label for="create-title">Title <span class="required">*</span></label>
+            <input id="create-title" name="title" type="text" maxlength="100" required placeholder="e.g. Write project report" />
+          </div>
+          <div class="field">
+            <label for="create-description">Description</label>
+            <textarea id="create-description" name="description" rows="4" maxlength="1000" placeholder="Optional details"></textarea>
+          </div>
+          <div class="field">
+            <label for="create-status">Status</label>
+            <select id="create-status" name="status">
+              <option value="pending">Pending</option>
+              <option value="in-progress">In Progress</option>
+              <option value="completed">Completed</option>
+            </select>
+          </div>
+          <p class="form-error" id="create-error" role="alert" hidden></p>
+          <button type="submit" class="btn btn-primary" id="create-submit">Add task</button>
+        </form>
+      </section>
+
+      <!-- Task list -->
+      <section class="card list-card" aria-labelledby="list-heading">
+        <div class="list-header">
+          <h2 id="list-heading">Tasks</h2>
+          <input id="search" class="search" type="search" placeholder="Search by title…" aria-label="Search tasks by title" />
+        </div>
+
+        <div class="filters" role="tablist" aria-label="Filter by status">
+          <button type="button" class="filter active" data-status="all" role="tab" aria-selected="true">All</button>
+          <button type="button" class="filter" data-status="pending" role="tab" aria-selected="false">Pending</button>
+          <button type="button" class="filter" data-status="in-progress" role="tab" aria-selected="false">In Progress</button>
+          <button type="button" class="filter" data-status="completed" role="tab" aria-selected="false">Completed</button>
+        </div>
+
+        <div id="loading" class="loading" hidden>
+          <span class="spinner" aria-hidden="true"></span> Loading tasks…
+        </div>
+        <p id="empty" class="empty" hidden></p>
+        <ul id="task-list" class="task-list"></ul>
+      </section>
+    </div>
+  </main>
+
+  <!-- Edit dialog -->
+  <dialog id="edit-dialog" class="dialog" aria-labelledby="edit-heading">
+    <form id="edit-form" novalidate>
+      <h2 id="edit-heading">Edit task</h2>
+      <input type="hidden" id="edit-id" />
+      <div class="field">
+        <label for="edit-title">Title <span class="required">*</span></label>
+        <input id="edit-title" name="title" type="text" maxlength="100" required />
+      </div>
+      <div class="field">
+        <label for="edit-description">Description</label>
+        <textarea id="edit-description" name="description" rows="4" maxlength="1000"></textarea>
+      </div>
+      <div class="field">
+        <label for="edit-status">Status</label>
+        <select id="edit-status" name="status">
+          <option value="pending">Pending</option>
+          <option value="in-progress">In Progress</option>
+          <option value="completed">Completed</option>
+        </select>
+      </div>
+      <p class="form-error" id="edit-error" role="alert" hidden></p>
+      <div class="dialog-actions">
+        <button type="button" class="btn btn-ghost" id="edit-cancel">Cancel</button>
+        <button type="submit" class="btn btn-primary" id="edit-submit">Save changes</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+  <script src="/js/app.js"></script>
+</body>
+</html>
