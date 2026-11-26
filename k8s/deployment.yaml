@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: taskflow
-          image: wubdigitalinfo/taskflow:1.0
+          image: wubdigitalinfo/taskflow:1.1
           ports:
             - containerPort: 3000
           env:
